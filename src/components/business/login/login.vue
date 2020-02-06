@@ -31,13 +31,12 @@
 </template>
 
 <script>
-
 export default {
   data() {
     return {
       loginDatas: {
-        username: "",
-        password: ""
+        username: "admin",
+        password: "123456"
       },
       //登陆框输入规则
       loginRules: {
@@ -55,9 +54,9 @@ export default {
   mounted() {
     // console.log(this)
     //绑定键盘回车键触发登陆按钮
-    const _this = this
+    const _this = this;
     document.onkeydown = function(v) {
-      if(v.keyCode === 13) _this.signClick()
+      if (v.keyCode === 13) _this.signClick();
     };
   },
   methods: {
@@ -76,6 +75,8 @@ export default {
           message: "登陆成功",
           type: "success"
         });
+        window.sessionStorage.setItem("token", res.data.token);
+        this.$router.push("/home");
       });
     }
   }
