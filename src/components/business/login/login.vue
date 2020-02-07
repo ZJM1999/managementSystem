@@ -35,8 +35,8 @@ export default {
   data() {
     return {
       loginDatas: {
-        username: "admin",
-        password: "123456"
+        username: "",
+        password: ""
       },
       //登陆框输入规则
       loginRules: {

@@ -3,7 +3,7 @@
     <el-container>
       <!-- 头部 -->
       <el-header>
-        <div class="logo">
+        <div class="logo" @click="goHome">
           <img src="@/assets/images/logo.jpg" alt />
           <span>后台管理系统</span>
         </div>
@@ -12,7 +12,7 @@
       <el-container>
         <!-- 左侧栏 -->
         <el-aside :width="isCollapse?'64px':'200px'">
-          <div class="toggleBtn" @click="toggleClick">{{isCollapse?'展':'折'}}</div>
+          <div class="toggleBtn" @click="toggleClick">{{isCollapse?'展开':'收起'}}</div>
           <!-- elementUI导航 -->
           <el-menu
             background-color="rgb(50,55,68)"
@@ -22,7 +22,7 @@
             :collapse="isCollapse"
             :collapse-transition="false"
             ref="menu"
-            :router='true'
+            :router="true"
           >
             <!-- 导航一 -->
             <el-submenu :index="item.id.toString()" v-for="item in lists" :key="item.id">
@@ -61,7 +61,7 @@ export default {
         "102": "iconfont icon-danju",
         "145": "iconfont icon-baobiao"
       },
-      isCollapse:false
+      isCollapse: false
     };
   },
   created() {
@@ -69,16 +69,20 @@ export default {
   },
   methods: {
     signOut() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
+      window.sessionStorage.clear()
+      this.$router.push("/login")
     },
     async getListDatas() {
-      const { data: res } = await this.$axios.get("/menus");
+      const { data: res } = await this.$axios.get("/menus")
       this.lists = res.data;
       this.status = res.meta.status;
     },
-    toggleClick(){
+    toggleClick() {
       this.isCollapse = !this.isCollapse
+    },
+    goHome() {
+      this.$router.push("/home")
+      this.isCollapse = 'false'
     }
   }
 };
@@ -101,7 +105,7 @@ export default {
 .el-container {
   height: 100%;
 }
-.el-menu{
+.el-menu {
   border-right: 0;
 }
 .home {
@@ -115,17 +119,19 @@ export default {
 }
 .logo {
   color: #fff;
-  font-size: 25px;
   display: flex;
+  font-size: 25px;
+  cursor: pointer;
   align-items: center;
 }
 .list-text {
   margin-left: 9px;
 }
-.toggleBtn{
-  padding: 5px 0;
-  text-align: center;
+.toggleBtn {
   color: #fff;
-  background-color: rgb(72,81,100);
+  padding: 5px 0;
+  cursor: pointer;
+  text-align: center;
+  background-color: rgb(72, 81, 100);
 }
 </style>

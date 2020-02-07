@@ -1,15 +1,17 @@
 <template>
-  <div class="welcome">
-    <h1>welcome</h1>
-  </div>
+  <div class="welcome"></div>
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
+.el-main {
+  padding: 0;
+}
+.welcome {
+  height: 100%;
+  background: url("../../../assets/images/welcome.jpg");
+}
 </style>
