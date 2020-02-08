@@ -69,20 +69,20 @@ export default {
   },
   methods: {
     signOut() {
-      window.sessionStorage.clear()
-      this.$router.push("/login")
+      window.sessionStorage.clear();
+      this.$router.push("/login");
     },
     async getListDatas() {
-      const { data: res } = await this.$axios.get("/menus")
+      const { data: res } = await this.$axios.get("/menus");
       this.lists = res.data;
       this.status = res.meta.status;
     },
     toggleClick() {
-      this.isCollapse = !this.isCollapse
+      this.isCollapse = !this.isCollapse;
     },
     goHome() {
-      this.$router.push("/home")
-      this.isCollapse = 'false'
+      this.$router.push("/home");
+      this.isCollapse = "false";
     }
   }
 };

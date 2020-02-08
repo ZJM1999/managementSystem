@@ -7,11 +7,9 @@ export default {};
 </script>
 
 <style>
-.el-main {
-  padding: 0;
-}
 .welcome {
-  height: 100%;
+  margin: -20px;
+  height: calc(100% + 40px);
   background: url("../../../assets/images/welcome.jpg");
 }
 </style>

@@ -51,13 +51,13 @@ export default {
       }
     };
   },
+  created() {
+    window.addEventListener("offline", function() {
+      alert("网络断开");
+    });
+  },
   mounted() {
-    // console.log(this)
-    //绑定键盘回车键触发登陆按钮
-    const _this = this;
-    document.onkeydown = function(v) {
-      if (v.keyCode === 13) _this.signClick();
-    };
+    this.watchEnter();
   },
   methods: {
     //验证表单
@@ -70,7 +70,9 @@ export default {
       this.$refs.loginFormRef.validate(async valid => {
         if (!valid) return;
         const { data: res } = await this.$axios.post("login", this.loginDatas);
-        if (res.meta.status !== 200) return this.$message.error("登陆失败");
+        if (res.meta.status !== 200) {
+          return this.$message.error("登陆失败");
+        }
         this.$message({
           message: "登陆成功",
           type: "success"
@@ -78,6 +80,14 @@ export default {
         window.sessionStorage.setItem("token", res.data.token);
         this.$router.push("/home");
       });
+    },
+    watchEnter() {
+      // console.log(this)
+      //绑定键盘回车键触发登陆按钮
+      const _this = this;
+      document.onkeydown = function(v) {
+        if (v.keyCode === 13) _this.signClick();
+      };
     }
   }
 };
@@ -88,7 +98,7 @@ export default {
   width: 100vw;
   height: 100vh;
   // background-color: #2b4b6b;
-  background: url('../../../assets/images/psb.jpg') no-repeat;
+  background: url("../../../assets/images/psb.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .login-content {
