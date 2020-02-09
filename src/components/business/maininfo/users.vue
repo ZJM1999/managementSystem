@@ -61,7 +61,12 @@
               @click="deleteUser(scope.row.id)"
             ></el-button>
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
+              <el-button
+                type="warning"
+                icon="el-icon-setting"
+                size="mini"
+                @click="setRights(scope.row)"
+              ></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -118,6 +123,29 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="isShowToChange = false">取 消</el-button>
         <el-button type="primary" @click="determineInfo">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 导入分配角色对话框 -->
+    <el-dialog title="提示" :visible.sync="isShowToRight" width="50%">
+      <!-- 分配角色对话框主内容 -->
+      <div>
+        <p>当前的用户: {{user}}</p>
+        <p>当前角色: {{rule}}</p>
+        <p>
+          分配新角色:
+          <el-select v-model="selectId" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+        </p>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="isShowToRight = false">取 消</el-button>
+        <el-button type="primary" @click="setRoleRights">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -180,7 +208,17 @@ export default {
         email: "",
         mobele: ""
       },
-      id: null
+      id: null,
+      isShowToRight: false,
+      //当前用户
+      user: null,
+      rule: null,
+      //新选择用户对应id
+      selectId: "",
+      //角色列表
+      options: [],
+      //需要被分配角色的用户id
+      userId: null
     };
   },
   created() {
@@ -310,6 +348,33 @@ export default {
       this.$message.success("删除成功");
       //重新获取用户列表
       this.getUsersInfo();
+    },
+    //监听分配角色的点击
+    async setRights(userInfo) {
+      this.userId = userInfo.id;
+      this.isShowToRight = true;
+      this.user = userInfo.username;
+      this.rule = userInfo.role_name;
+      const { data: res } = await this.$axios.get("roles/");
+      if (res.meta.status !== 200)
+        return this.$message.error("角色列表获取失败");
+      // console.log(res);
+      this.options = res.data;
+    },
+    //提交分配角色结果
+    async setRoleRights() {
+      const { data: res } = await this.$axios.put(`users/${this.userId}/role`, {
+        rid: this.selectId
+      });
+      //判断是否修改admin用户
+      if (res.meta.status == 400) {
+        this.isShowToRight = false;
+        return this.$message.error("不允许修改admin账户");
+      }
+      if (res.meta.status !== 200) return this.$message.error("角色分配失败");
+      this.$message.success("角色分配成功");
+      this.getUsersInfo();
+      this.isShowToRight = false;
     }
   }
 };
