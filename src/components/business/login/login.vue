@@ -98,7 +98,7 @@ export default {
   width: 100vw;
   height: 100vh;
   // background-color: #2b4b6b;
-  background: url("../../../assets/images/psb.jpg") no-repeat;
+  background: url("../../../assets/images/back.jpg") no-repeat;
   background-size: 100% 100%;
 }
 .login-content {
