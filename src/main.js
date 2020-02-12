@@ -28,6 +28,26 @@ Vue.config.productionTip = false
 //全局定义tableTree的组件
 Vue.component('table-tree', tableTree)
 
+//定义全局时间过滤器
+Vue.filter('timeFilter',function(data){
+  const time = new Date(data)
+
+  const y = time.getFullYear()
+
+  const m = (time.getMonth()+1).toString().padStart(2,'0')
+
+  const d = time.getDate().toString().padStart(2,'0')
+
+  const hh = time.getUTCHours().toString().padStart(2,'0')
+
+  const mm = time.getMinutes().toString().padStart(2,'0')
+
+  const ss = time.getSeconds().toString().padStart(2,'0')
+
+  //return出去外部使用
+  return `${y}-${m}-${d} ${hh}-${mm}-${ss}`
+})
+
 new Vue({
   router,
   store,

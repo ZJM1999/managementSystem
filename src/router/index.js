@@ -12,6 +12,7 @@ const params = () => import('components/business/maininfo/params')
 const orders = () => import('components/business/maininfo/orders')
 const goods = () => import('components/business/maininfo/goods')
 const categories = () => import('components/business/maininfo/categories')
+const Add = () => import('components/business/addGoods/Add')
 
 Vue.use(VueRouter)
 
@@ -27,44 +28,48 @@ const routes = [
   {
     path: '/home',
     component: Home,
-    redirect:'/welcome',
-    children:[
+    redirect: '/welcome',
+    children: [
       {
-        path:'/welcome',
-        component:welcome
+        path: '/welcome',
+        component: welcome
       },
       {
-        path:'/users',
-        component:users
+        path: '/users',
+        component: users
       },
       {
-        path:'/roles',
-        component:roles
+        path: '/roles',
+        component: roles
       },
       {
-        path:'/rights',
-        component:rights
+        path: '/rights',
+        component: rights
       },
       {
-        path:'/reports',
-        component:reports
+        path: '/reports',
+        component: reports
       },
       {
-        path:'/params',
-        component:params
+        path: '/params',
+        component: params
       },
       {
-        path:'/orders',
-        component:orders
+        path: '/orders',
+        component: orders
       },
       {
-        path:'/goods',
-        component:goods
+        path: '/goods',
+        component: goods
       },
       {
-        path:'/categories',
-        component:categories
-      }
+        path: '/categories',
+        component: categories
+      },
+      {
+        path: '/goods/add',
+        component: Add
+      },
     ]
   }
 ]
