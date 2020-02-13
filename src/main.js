@@ -29,24 +29,38 @@ Vue.config.productionTip = false
 Vue.component('table-tree', tableTree)
 
 //定义全局时间过滤器
-Vue.filter('timeFilter',function(data){
+Vue.filter('timeFilter', function (data) {
   const time = new Date(data)
 
   const y = time.getFullYear()
 
-  const m = (time.getMonth()+1).toString().padStart(2,'0')
+  const m = (time.getMonth() + 1).toString().padStart(2, '0')
 
-  const d = time.getDate().toString().padStart(2,'0')
+  const d = time.getDate().toString().padStart(2, '0')
 
-  const hh = time.getUTCHours().toString().padStart(2,'0')
+  const hh = time.getUTCHours().toString().padStart(2, '0')
 
-  const mm = time.getMinutes().toString().padStart(2,'0')
+  const mm = time.getMinutes().toString().padStart(2, '0')
 
-  const ss = time.getSeconds().toString().padStart(2,'0')
+  const ss = time.getSeconds().toString().padStart(2, '0')
 
   //return出去外部使用
   return `${y}-${m}-${d} ${hh}-${mm}-${ss}`
 })
+
+
+
+//注册全局vue-quill-editor插件组件
+import VueQuillEditor from 'vue-quill-editor'
+
+// require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor)
+
+
 
 new Vue({
   router,

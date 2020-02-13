@@ -18,7 +18,6 @@
             :props="props"
             v-model="goodsIds"
             @change="goodsChange"
-            clearable
           ></el-cascader>
         </el-col>
       </el-row>
@@ -287,6 +286,8 @@ export default {
         }
       );
       if (res.meta.status !== 200) return this.$message.error("参数修改失败");
+      console.log(res);
+
       this.$message.success("参数修改成功");
       this.getTabsDatas();
       this.isShowToModify = false;

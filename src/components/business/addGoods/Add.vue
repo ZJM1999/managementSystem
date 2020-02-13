@@ -59,7 +59,7 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="商品参数" name="1">
-            <!-- 商品参数主要信息 -->
+            <!-- 动态商品参数主要信息 -->
             <el-form-item v-for="(i,x) in this.cateDatas" :key="x" :label="i.attr_name">
               <!-- 复选框组 -->
               <el-checkbox-group v-model="i.attr_vals">
@@ -68,7 +68,7 @@
             </el-form-item>
           </el-tab-pane>
           <el-tab-pane label="商品属性" name="2">
-            <!-- 商品属性内容 -->
+            <!-- 静态商品属性内容 -->
             <el-form-item
               :label="item.attr_name"
               v-for="(item,index) in this.onlyLists"
@@ -92,7 +92,11 @@
               <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
           </el-tab-pane>
-          <el-tab-pane label="商品内容" name="4">商品内容</el-tab-pane>
+          <el-tab-pane label="商品内容" name="4">
+            <!-- 使用富文本编辑器 -->
+            <quill-editor v-model="goodsForm.goods_introduce"></quill-editor>
+            <el-button type="primary" class="submit" @click="submitClick">提交</el-button>
+          </el-tab-pane>
         </el-tabs>
       </el-form>
     </el-card>
@@ -108,6 +112,7 @@
 </template>
 
 <script>
+var _ = require("lodash");
 export default {
   data() {
     return {
@@ -133,11 +138,13 @@ export default {
       //表单数据
       goodsForm: {
         goods_name: "",
-        goods_price: null,
-        goods_weight: null,
-        goods_number: null,
+        goods_price: 0,
+        goods_weight: 0,
+        goods_number: 0,
         goods_cat: [],
-        pics: []
+        pics: [],
+        goods_introduce: "",
+        attrs: []
       },
       //级联选择器显示内容
       props: {
@@ -145,9 +152,9 @@ export default {
         label: "cat_name",
         children: "children"
       },
-      //复选框组展示数据
+      //保存动态商品属性参数
       cateDatas: [],
-      //保存商品属性数据
+      //保存静态商品属性数据
       onlyLists: [],
       //图片上传url
       imgUploadUrl: "http://127.0.0.1:8888/api/private/v1/upload",
@@ -230,6 +237,41 @@ export default {
       this.viewUrl = file.response.data.url;
       //显示预览对话框
       this.isShowView = true;
+    },
+    //点击提交按钮
+    submitClick() {
+      //表单预验证
+      this.$refs.ruleFormRef.validate(async valid => {
+        if (!valid) return this.$message.error("请填写必要的表单项");
+        //深拷贝，解决数组使用冲突问题
+        const cloneObj = _.cloneDeep(this.goodsForm);
+        //将数组转成请求需要的格式
+        cloneObj.goods_cat = cloneObj.goods_cat.join(",");
+        //1.整理动态参数格式
+        this.cateDatas.forEach(item => {
+          const many = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals.join(",")
+          };
+          //将每一项添加到数组中
+          cloneObj.attrs.push(many);
+        });
+
+        //2.整理静态参数格式
+        this.onlyLists.forEach(item => {
+          const only = {
+            attr_id: item.attr_id,
+            attr_value: item.attr_vals
+          };
+          //将每一项添加到数组中
+          cloneObj.attrs.push(only);
+        });
+        //发起数据请求添加商品
+        const { data: res } = await this.$axios.post("goods/", cloneObj);
+        if (res.meta.status !== 201) return this.$message.error("添加商品失败");
+        this.$message.success("商品添加成功");
+        this.$router.push("/goods");
+      });
     }
   },
 
@@ -253,5 +295,11 @@ export default {
 }
 .view-img {
   width: 100%;
+}
+.ql-editor {
+  min-height: 300px;
+}
+.submit {
+  margin-top: 10px;
 }
 </style>
