@@ -157,7 +157,7 @@ export default {
       //保存静态商品属性数据
       onlyLists: [],
       //图片上传url
-      imgUploadUrl: "http://127.0.0.1:8888/api/private/v1/upload",
+      imgUploadUrl: "https://www.liulongbin.top:8888/api/private/v1/upload",
       //手动设置图片上传请求头
       headerInfo: { Authorization: sessionStorage.getItem("token") },
       //预览图片url

@@ -16,7 +16,7 @@
 
 <script>
 import echarts from "echarts";
-import _ from 'lodash'
+import _ from "lodash";
 export default {
   data() {
     return {
@@ -56,11 +56,12 @@ export default {
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById("main"));
     //折线图数据请求
-    const {data:res} = await this.$axios.get('reports/type/1')
-    if(res.meta.status !== 200)return this.$message.error('折线图数据请求失败')
+    const { data: res } = await this.$axios.get("reports/type/1");
+    if (res.meta.status !== 200)
+      return this.$message.error("折线图数据请求失败");
 
     //处理两个对象数据合并
-    const newOptions = _.merge(this.options,res.data)
+    const newOptions = _.merge(this.options, res.data);
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(newOptions);
   },

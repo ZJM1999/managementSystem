@@ -9,11 +9,9 @@ import elements from '@/plugins/element.js'
 //导入vue-table-with-tree-grid插件
 import tableTree from 'vue-table-with-tree-grid'
 
-
-
 //导入axios
 import axios from 'axios'
-axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+axios.defaults.baseURL = 'https://www.liulongbin.top:8888/api/private/v1/'
 
 //保存登录token 确保以后每一次请求都必须携带token值
 axios.interceptors.request.use(config => {
