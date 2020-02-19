@@ -34,9 +34,10 @@
 export default {
   data() {
     return {
+      //设置默认密码
       loginDatas: {
-        username: "",
-        password: ""
+        username: "admin",
+        password: "123456"
       },
       //登陆框输入规则
       loginRules: {
